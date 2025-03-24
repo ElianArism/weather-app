@@ -15,11 +15,10 @@
       </picture>
 
       <div class="weather-details">
-        <p>4 Degrees</p>
+        <span class="current-temperature">4°</span>
 
-        <div class="location-details">
-          <p>Argentina - Resistencia, Chaco</p>
-          <p>18 hs</p>
+        <div class="h-l-temperature">
+          <span>L:20</span> - <span>H: 40</span>
         </div>
 
         <div class="other-details">
@@ -44,16 +43,18 @@
         </div>
       </div>
     </div>
-  </article>
 
-  <article class="weather-carrousel">
-    <div class="weather-carrousel-card">
-      <div>18 hs</div>
-      <p>4 Degrees</p>
-      <p>Argentina</p>
-      <p>Resistencia, Chaco</p>
+    <div class="location-details">
+      <p>Argentina - Resistencia, Chaco</p>
+      <p>18 hs</p>
     </div>
   </article>
 
-  <hr />
+  <article class="weather-carrousel">
+    @for (day of days; track day) {
+    <div class="weather-carrousel-card">
+      <span>{{ day | titlecase }}</span>
+    </div>
+    }
+  </article>
 </section>

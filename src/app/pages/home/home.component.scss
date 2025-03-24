@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 100%;
   height: 100vh;
+  background-color: blue;
 
   & .search-bar-container {
     width: 100%;
@@ -39,13 +40,16 @@
 
   & .main-card-container {
     background-color: aquamarine;
-    height: 75%;
 
     & .main-weather-card {
-      width: 98%;
-      margin: 12% auto 0 auto;
+      border-radius: 10px;
+
+      width: 50%;
+      max-width: 600px;
+      margin: 80px auto 1% auto;
       background-color: red;
-      padding: 5px;
+      padding: 15px;
+      position: relative;
 
       display: flex;
       flex-direction: column;
@@ -58,6 +62,19 @@
 
       & .weather-details {
         width: 100%;
+
+        & .current-temperature {
+          position: absolute;
+          font-size: 2rem;
+          font-weight: bold;
+          top: 10px;
+          right: 15px;
+        }
+
+        & .h-l-temperature {
+          margin: 20px auto;
+          text-align: center;
+        }
 
         & .other-details {
           display: flex;
@@ -76,6 +93,34 @@
           }
         }
       }
+    }
+
+    & .location-details {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+
+      text-align: center;
+      margin: 20px auto;
+      font-size: 1.5rem;
+    }
+  }
+
+  & .weather-carrousel {
+    margin: 50px auto 0 auto;
+    height: 28%;
+    width: 90%;
+    display: flex;
+
+    & .weather-carrousel-card {
+      background-color: violet;
+      padding: 10px;
+      width: 30%;
+      min-width: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 10px;
     }
   }
 }
