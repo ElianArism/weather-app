@@ -1,4 +1,4 @@
-<section class="home-section-container">
+<main class="container">
   <header class="search-bar-container">
     <form class="search-location-form">
       <input class="location-input" type="text" placeholder="Enter location" />
@@ -8,53 +8,56 @@
     </form>
   </header>
 
-  <article class="main-card-container">
-    <div class="main-weather-card">
-      <picture class="weather-img-container">
-        <img src="../../../assets/cloud.png" alt="Cloudy" />
-      </picture>
+  <section class="home-section-container">
+    <article class="main-card-container">
+      <div class="main-weather-card glass-effect">
+        <picture class="weather-img-container">
+          <img src="../../../assets/cloud.png" alt="Cloudy" />
+        </picture>
 
-      <div class="weather-details">
-        <span class="current-temperature">4°</span>
+        <div class="weather-details">
+          <span class="current-temperature">4°</span>
 
-        <div class="h-l-temperature">
-          <span>L:20</span> - <span>H: 40</span>
-        </div>
-
-        <div class="other-details">
-          <div class="humidity-details">
-            <p>10%</p>
-            <picture class="icon-container">
-              <img src="../../../assets/humidity.png" alt="humidity" />
-            </picture>
+          <div class="h-l-temperature">
+            <span>L:20</span> - <span>H: 40</span>
           </div>
-          <div class="wind-details">
-            <p>1km, h %</p>
-            <picture class="icon-container">
-              <img src="../../../assets/wind.png" alt="wind" />
-            </picture>
-          </div>
-          <div class="rain-details">
-            <p>10%</p>
-            <picture class="icon-container">
-              <img src="../../../assets/umbrella.png" alt="umbrella" />
-            </picture>
+
+          <div class="other-details">
+            <div class="humidity-details">
+              <p>10%</p>
+              <picture class="icon-container">
+                <img src="../../../assets/humidity.png" alt="humidity" />
+              </picture>
+            </div>
+            <div class="wind-details">
+              <p>1km, h %</p>
+              <picture class="icon-container">
+                <img src="../../../assets/wind.png" alt="wind" />
+              </picture>
+            </div>
+            <div class="rain-details">
+              <p>10%</p>
+              <picture class="icon-container">
+                <img src="../../../assets/umbrella.png" alt="umbrella" />
+              </picture>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </article>
 
-    <div class="location-details">
-      <p>Argentina - Resistencia, Chaco</p>
-      <p>18 hs</p>
-    </div>
-  </article>
+    <article class="weather-carrousel">
+      @for (day of days; track day) {
+      <div class="weather-carrousel-card glass-effect">
+        <span>{{ day | titlecase }}</span>
+      </div>
+      }
+    </article>
+  </section>
 
-  <article class="weather-carrousel">
-    @for (day of days; track day) {
-    <div class="weather-carrousel-card">
-      <span>{{ day | titlecase }}</span>
-    </div>
-    }
-  </article>
-</section>
+  <footer class="footer">
+    <a href="https://www.linkedin.com/in/elian-arismendi/">
+      &copy; Elian Arismendi
+    </a>
+  </footer>
+</main>

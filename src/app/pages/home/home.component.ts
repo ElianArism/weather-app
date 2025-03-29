@@ -1,6 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { WeatherService } from '../../weather.service';
+import { GeolocationService } from '../../services/geolocation/geolocation.service';
+import { WeatherService } from '../../services/weather/weather.service';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +12,7 @@ import { WeatherService } from '../../weather.service';
 })
 export class HomeComponent implements OnInit {
   weatherService = inject(WeatherService);
+  geolocationService = inject(GeolocationService);
 
   days = [
     'Monday',
