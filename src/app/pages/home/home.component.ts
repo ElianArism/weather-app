@@ -1,5 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { from, switchMap } from 'rxjs';
+import { IWeatherForecast } from '../../interfaces/weather-forecast';
 import { GeolocationService } from '../../services/geolocation/geolocation.service';
 import { WeatherService } from '../../services/weather/weather.service';
 
@@ -32,6 +33,8 @@ export class HomeComponent implements OnInit {
     'saturday',
     'sunday',
   ];
+
+  dailyWeatherForecast$ = signal<IWeatherForecast | null>(null);
 
   readonly addressForm = new FormGroup({
     address: new FormControl<string>('', {
@@ -60,12 +63,19 @@ export class HomeComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (r) => {
-          console.log(r);
+        next: (weatherData) => {
+          console.log(weatherData);
+          // this.updateForecast(weatherData);
         },
         error: (err) => {
           console.log(err);
         },
       });
+  }
+
+  updateForecast(weatherData: IWeatherForecast) {
+    this.dailyWeatherForecast$.set({
+      ...weatherData,
+    });
   }
 }
