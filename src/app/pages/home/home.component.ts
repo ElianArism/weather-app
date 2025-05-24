@@ -1,5 +1,13 @@
-import { TitleCasePipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { NgIf, TitleCasePipe } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  Renderer2,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -10,6 +18,7 @@ import { from, switchMap } from 'rxjs';
 import { IWeatherForecast } from '../../interfaces/weather-forecast';
 import { GeolocationService } from '../../services/geolocation/geolocation.service';
 import { WeatherService } from '../../services/weather/weather.service';
+import { getWeatherClassByWeatherCode } from '../../utils';
 
 interface IAddressForm {
   address: string;
@@ -17,13 +26,17 @@ interface IAddressForm {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TitleCasePipe, ReactiveFormsModule],
+  imports: [TitleCasePipe, ReactiveFormsModule, NgIf],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
+  @ViewChild('containerRef')
+  containerRef!: ElementRef<HTMLDivElement>;
+
   weatherService = inject(WeatherService);
   geolocationService = inject(GeolocationService);
+  renderer2 = inject(Renderer2);
   days = [
     'Monday',
     'tuesday',
@@ -47,9 +60,7 @@ export class HomeComponent implements OnInit {
     }),
   });
 
-  ngOnInit(): void {
-    // this.weatherService.test();
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
     if (this.addressForm.invalid) return;
@@ -63,9 +74,11 @@ export class HomeComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (weatherData) => {
-          console.log(weatherData);
-          // this.updateForecast(weatherData);
+        next: (response) => {
+          const weatherData = this.weatherService.parseWeatherData(response);
+          const dailyForescast =
+            this.weatherService.getDailyWeatherData(weatherData);
+          this.updateForecast(dailyForescast);
         },
         error: (err) => {
           console.log(err);
@@ -77,5 +90,10 @@ export class HomeComponent implements OnInit {
     this.dailyWeatherForecast$.set({
       ...weatherData,
     });
+
+    this.renderer2.addClass(
+      this.containerRef.nativeElement,
+      getWeatherClassByWeatherCode(weatherData.weatherCode, weatherData.isDay)
+    );
   }
 }

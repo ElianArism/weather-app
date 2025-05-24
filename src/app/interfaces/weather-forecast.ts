@@ -10,5 +10,6 @@ export interface IWeatherForecast {
   rainSum: number;
   humidity: number;
   windSpeed: number;
-  isDay?: any;
+  weatherCode: number;
+  isDay: number;
 }

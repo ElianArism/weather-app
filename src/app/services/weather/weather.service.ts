@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { fetchWeatherApi } from 'openmeteo';
 import { IWeatherForecast } from '../../interfaces/weather-forecast';
+import { roundDecimals } from '../../utils';
 @Injectable({
   providedIn: 'root',
 })
@@ -44,6 +45,7 @@ export class WeatherService {
         'rain',
         'showers',
         'is_day',
+        'weather_code',
       ],
     };
     const url = 'https://api.open-meteo.com/v1/forecast';
@@ -52,31 +54,47 @@ export class WeatherService {
     this.logWeatherData(responses[0]);
 
     // Process first location. Add a for-loop for multiple locations or weather models
-    return this.getDailyWeatherData(responses[0]);
+    return responses[0];
   }
 
   private logWeatherData(data: any): void {
     const weatherData = this.parseWeatherData(data);
     for (let i = 0; i < weatherData.daily.time.length; i++) {
+      console.log('time : ' + weatherData.daily.time[i].toISOString());
+      console.log('sunrise : ' + weatherData.daily.sunrise[i].toISOString());
+      console.log('sunset : ' + weatherData.daily.sunset[i].toISOString());
       console.log(
-        weatherData.daily.time[i].toISOString(),
-        weatherData.daily.sunrise[i].toISOString(),
-        weatherData.daily.sunset[i].toISOString(),
-        weatherData.daily.temperature2mMax[i],
-        weatherData.daily.temperature2mMean[i],
-        weatherData.daily.apparentTemperatureMean[i],
-        weatherData.daily.precipitationProbabilityMean[i],
-        weatherData.daily.relativeHumidity2mMean[i],
-        weatherData.daily.temperature2mMin[i],
-        weatherData.daily.windSpeed10mMean[i],
-        weatherData.daily.rainSum[i]
+        'temperature2mMax : ' + weatherData.daily.temperature2mMax[i]
       );
+      console.log(
+        'temperature2mMean : ' + weatherData.daily.temperature2mMean[i]
+      );
+      console.log(
+        'apparentTemperatureMean : ' +
+          weatherData.daily.apparentTemperatureMean[i]
+      );
+      console.log(
+        'precipitationProbabilityMean : ' +
+          weatherData.daily.precipitationProbabilityMean[i]
+      );
+      console.log(
+        'relativeHumidity2mMean : ' +
+          weatherData.daily.relativeHumidity2mMean[i]
+      );
+      console.log(
+        'temperature2mMin : ' + weatherData.daily.temperature2mMin[i]
+      );
+      console.log(
+        'windSpeed10mMean : ' + weatherData.daily.windSpeed10mMean[i]
+      );
+      console.log('rainSum : ' + weatherData.daily.rainSum[i]);
+      console.log('weather_code : ' + weatherData.current.weather_code);
     }
 
     console.log(weatherData.current);
   }
 
-  private parseWeatherData(response: any) {
+  parseWeatherData(response: any) {
     // Attributes for timezone and location
     const utcOffsetSeconds = response.utcOffsetSeconds();
     const current = response.current()!;
@@ -95,6 +113,7 @@ export class WeatherService {
         rain: current.variables(4)!.value(),
         showers: current.variables(5)!.value(),
         isDay: current.variables(6)!.value(),
+        weather_code: current.variables(7)!.value(),
       },
       daily: {
         time: [
@@ -131,27 +150,28 @@ export class WeatherService {
     return weatherData;
   }
 
-  getDailyWeatherData(data: any): IWeatherForecast {
-    const weatherData = this.parseWeatherData(data);
-
+  getDailyWeatherData(weatherData: any): IWeatherForecast {
     return {
-      day: weatherData.daily.time[0].toISOString(), // Day associated with the forecast (ONLY DAY, this is not the exact hour)
+      day: (weatherData.daily.time[0].toISOString() as string).split('T')[0], // Day associated with the forecast (ONLY DAY, this is not the exact hour)
       sunrise: weatherData.daily.sunrise[0].toLocaleString(),
       sunset: weatherData.daily.sunset[0].toLocaleString(),
-      temperatureMax: weatherData.daily.temperature2mMax[0],
-      temperatureMean: weatherData.daily.temperature2mMean[0],
-      apparentTemperature: weatherData.daily.apparentTemperatureMean[0],
+      temperatureMax: roundDecimals(weatherData.daily.temperature2mMax[0]),
+      temperatureMean: roundDecimals(weatherData.current.temperature2m),
+      apparentTemperature: roundDecimals(
+        weatherData.current.apparentTemperature
+      ),
       precipitationProbability:
         weatherData.daily.precipitationProbabilityMean[0],
-      humidity: weatherData.daily.relativeHumidity2mMean[0],
-      temperatureMin: weatherData.daily.temperature2mMin[0],
-      windSpeed: weatherData.daily.windSpeed10mMean[0],
-      rainSum: weatherData.daily.rainSum[0],
+      humidity: roundDecimals(weatherData.daily.relativeHumidity2mMean[0]),
+      temperatureMin: roundDecimals(weatherData.daily.temperature2mMin[0]),
+      windSpeed: roundDecimals(weatherData.current.windSpeed10m),
+      rainSum: roundDecimals(weatherData.daily.rainSum[0]),
+      isDay: weatherData.current.isDay,
+      weatherCode: weatherData.current.weatherCode,
     };
   }
 
   getWeeklyWeatherData(data: any) {
-    const weatherData = this.parseWeatherData(data);
-    return weatherData;
+    return data;
   }
 }

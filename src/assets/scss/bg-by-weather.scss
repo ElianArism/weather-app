@@ -1,0 +1,83 @@
+/* ================================
+   ☀️ DESPEJADO
+================================= */
+
+/* Día */
+.clear-day {
+  background: linear-gradient(to top, #87ceeb, #ffffff);
+}
+
+/* Noche */
+.clear-night {
+  background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+}
+
+/* ================================
+   ☁️ NUBLADO
+================================= */
+
+/* Día */
+.cloudy-day {
+  background: linear-gradient(to top, #d7d2cc, #304352);
+}
+
+/* Noche */
+.cloudy-night {
+  background: linear-gradient(to top, #2c3e50, #bdc3c7);
+}
+
+/* ================================
+   🌧️ LLUVIOSO
+================================= */
+
+/* Día */
+.rainy-day {
+  background: linear-gradient(to top, #4b79a1, #283e51);
+}
+
+/* Noche */
+.rainy-night {
+  background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+}
+
+/* ================================
+   ❄️ NIEVE
+================================= */
+
+/* Día */
+.snow-day {
+  background: linear-gradient(to top, #e6dada, #274046);
+}
+
+/* Noche */
+.snow-night {
+  background: linear-gradient(to top, #1c1c1c, #434343);
+}
+
+/* ================================
+   ⚡ TORMENTA ELÉCTRICA
+================================= */
+
+/* Día */
+.storm-day {
+  background: linear-gradient(to top, #232526, #414345);
+}
+
+/* Noche */
+.storm-night {
+  background: linear-gradient(to top, #0f2027, #203a43, #4b6cb7);
+}
+
+/* ================================
+   🌤️ PARCIALMENTE NUBLADO
+================================= */
+
+/* Día */
+.partly-cloudy-day {
+  background: linear-gradient(to top, #fceabb, #f8b500, #d7d2cc);
+}
+
+/* Noche */
+.partly-cloudy-night {
+  background: linear-gradient(to top, #2c3e50, #4ca1af);
+}

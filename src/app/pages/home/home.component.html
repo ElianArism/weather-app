@@ -1,4 +1,4 @@
-<main class="container">
+<main class="container" #containerRef>
   <header class="search-bar-container">
     <form
       class="search-location-form"
@@ -17,35 +17,42 @@
     </form>
   </header>
 
+  <h2 *ngIf="addressForm.value && dailyWeatherForecast$()">
+    {{ addressForm.value.address }} - {{ dailyWeatherForecast$()?.day }}
+  </h2>
+
   <section class="home-section-container">
-    <article class="main-card-container">
+    <article class="main-card-container" *ngIf="dailyWeatherForecast$()">
       <div class="main-weather-card glass-effect">
         <picture class="weather-img-container">
           <img src="../../../assets/cloud.png" alt="Cloudy" />
         </picture>
 
         <div class="weather-details">
-          <span class="current-temperature">4°</span>
+          <span class="current-temperature"
+            >{{ dailyWeatherForecast$()?.temperatureMean }}°</span
+          >
 
           <div class="h-l-temperature">
-            <span>L:20</span> - <span>H: 40</span>
+            <span>L: {{ dailyWeatherForecast$()?.temperatureMin }}°</span> -
+            <span>H: {{ dailyWeatherForecast$()?.temperatureMax }}°</span>
           </div>
 
           <div class="other-details">
             <div class="humidity-details">
-              <p>10%</p>
+              <p>{{ dailyWeatherForecast$()?.humidity }}%</p>
               <picture class="icon-container">
                 <img src="../../../assets/humidity.png" alt="humidity" />
               </picture>
             </div>
             <div class="wind-details">
-              <p>1km, h %</p>
+              <p>{{ dailyWeatherForecast$()?.windSpeed }}km/h</p>
               <picture class="icon-container">
                 <img src="../../../assets/wind.png" alt="wind" />
               </picture>
             </div>
             <div class="rain-details">
-              <p>10%</p>
+              <p>{{ dailyWeatherForecast$()?.precipitationProbability }}%</p>
               <picture class="icon-container">
                 <img src="../../../assets/umbrella.png" alt="umbrella" />
               </picture>

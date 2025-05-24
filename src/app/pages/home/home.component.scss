@@ -1,17 +1,6 @@
-.container {
-  background: linear-gradient(to bottom, #87ceeb, #ffd700); // soleado
-  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); //noche
-  background: linear-gradient(to bottom, #757f9a, #d7dde8); // dia lluvioso
-  background: linear-gradient(to bottom, #b0bec5, #eceff1); // dia nublado
-  background: linear-gradient(
-    to bottom,
-    #232526,
-    #414345
-  ); // tormenta electrica
-  background: linear-gradient(to bottom, #e0eafc, #cfdef3); // nieve/invierno
-  background: linear-gradient(to bottom, #ff7e5f, #feb47b); // atardecer
-  // background: linear-gradient(to bottom, #f2994a, #f2c94c); // dia caluroso
+@import "../../../assets/scss/bg-by-weather.scss";
 
+.container {
   & .search-bar-container {
     width: 100%;
     background-color: transparent;
