@@ -13,3 +13,7 @@ export interface IWeatherForecast {
   weatherCode: number;
   isDay: number;
 }
+
+export interface ILocationAndWeatherDetails extends IWeatherForecast {
+  location: string;
+}

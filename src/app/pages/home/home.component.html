@@ -1,28 +1,11 @@
 <main class="container" #containerRef>
-  <header class="search-bar-container">
-    <form
-      class="search-location-form"
-      [formGroup]="addressForm"
-      (ngSubmit)="onSubmit()"
-    >
-      <input
-        class="location-input"
-        type="text"
-        placeholder="Enter location"
-        formControlName="address"
-      />
-      <button class="search-btn" type="submit">
-        <img src="../../../assets/search-interface-symbol.png" alt="" />
-      </button>
-    </form>
-  </header>
-
-  <h2 *ngIf="addressForm.value && dailyWeatherForecast$()">
-    {{ addressForm.value.address }} - {{ dailyWeatherForecast$()?.day }}
-  </h2>
-
+  @if(!dailyWeatherForecast$()) {
+  <app-search-location (locationDetails)="updateForecast($event)" />
+  } @else {
   <section class="home-section-container">
-    <article class="main-card-container" *ngIf="dailyWeatherForecast$()">
+    <article class="main-card-container">
+      <a class="day-btn"> Day Before </a>
+
       <div class="main-weather-card glass-effect">
         <picture class="weather-img-container">
           <img src="../../../assets/cloud.png" alt="Cloudy" />
@@ -60,16 +43,16 @@
           </div>
         </div>
       </div>
+
+      <a class="day-btn"> Next Day </a>
     </article>
 
-    <article class="weather-carrousel">
-      @for (day of days; track day) {
-      <div class="weather-carrousel-card glass-effect">
-        <span>{{ day | titlecase }}</span>
-      </div>
-      }
-    </article>
+    <h2 class="location">
+      {{ dailyWeatherForecast$()?.location }} -
+      {{ dailyWeatherForecast$()?.day }}
+    </h2>
   </section>
+  }
 
   <footer class="footer">
     <a href="https://www.linkedin.com/in/elian-arismendi/">

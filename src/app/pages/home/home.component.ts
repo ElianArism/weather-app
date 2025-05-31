@@ -1,94 +1,42 @@
-import { NgIf, TitleCasePipe } from '@angular/common';
 import {
   Component,
   ElementRef,
   inject,
-  OnInit,
   Renderer2,
   signal,
   ViewChild,
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { from, switchMap } from 'rxjs';
-import { IWeatherForecast } from '../../interfaces/weather-forecast';
-import { GeolocationService } from '../../services/geolocation/geolocation.service';
-import { WeatherService } from '../../services/weather/weather.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SCHEDULER_CONFIG } from '../../constants/scheduler.config';
+import { ILocationAndWeatherDetails } from '../../interfaces/weather-forecast';
+import { DayIndexes, MonthIndexes } from '../../types/day.index';
 import { getWeatherClassByWeatherCode } from '../../utils';
+import { SearchLocationComponent } from './components/search-location/search-location.component';
 
-interface IAddressForm {
-  address: string;
-}
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TitleCasePipe, ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, SearchLocationComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   @ViewChild('containerRef')
   containerRef!: ElementRef<HTMLDivElement>;
-
-  weatherService = inject(WeatherService);
-  geolocationService = inject(GeolocationService);
   renderer2 = inject(Renderer2);
-  days = [
-    'Monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday',
-    'sunday',
-  ];
 
-  dailyWeatherForecast$ = signal<IWeatherForecast | null>(null);
+  dailyWeatherForecast$ = signal<ILocationAndWeatherDetails | null>(null);
 
-  readonly addressForm = new FormGroup({
-    address: new FormControl<string>('', {
-      nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-      ],
-    }),
-  });
+  updateForecast(weatherData: ILocationAndWeatherDetails) {
+    const date = new Date(weatherData.day);
+    const dayNumber: DayIndexes = date.getDay() as DayIndexes;
+    const dayStr: string = SCHEDULER_CONFIG.DAYS[dayNumber];
+    const monthNumber: MonthIndexes = date.getMonth() as MonthIndexes;
+    const monthStr: string = SCHEDULER_CONFIG.MONTHS[monthNumber];
 
-  ngOnInit(): void {}
-
-  onSubmit() {
-    if (this.addressForm.invalid) return;
-
-    const address: string = this.addressForm.value.address!;
-    this.geolocationService
-      .getCoordinates(address)
-      .pipe(
-        switchMap((locationDetails: any) => {
-          return from(this.weatherService.getWeather(locationDetails));
-        })
-      )
-      .subscribe({
-        next: (response) => {
-          const weatherData = this.weatherService.parseWeatherData(response);
-          const dailyForescast =
-            this.weatherService.getDailyWeatherData(weatherData);
-          this.updateForecast(dailyForescast);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-  }
-
-  updateForecast(weatherData: IWeatherForecast) {
     this.dailyWeatherForecast$.set({
       ...weatherData,
+      day: `${dayStr}, ${date.getDate()} ${monthStr} of ${date.getFullYear()}`,
     });
 
     this.renderer2.addClass(

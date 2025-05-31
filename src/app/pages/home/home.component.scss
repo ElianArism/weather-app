@@ -1,66 +1,27 @@
 @import "../../../assets/scss/bg-by-weather.scss";
 
 .container {
-  & .search-bar-container {
-    width: 100%;
-    background-color: transparent;
-    z-index: 10;
-    margin-bottom: 20px;
-
-    & .search-location-form {
-      padding: 5px;
-      width: 60%;
-      margin: auto;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-
-      & .location-input {
-        border-radius: 10px;
-        padding: 10px;
-        width: 90%;
-        font-size: 1.2rem;
-        border: 1px solid #333;
-        outline: none;
-        background: rgba(255, 255, 255, 0.918);
-      }
-
-      & .location-input::placeholder {
-        color: black;
-      }
-
-      & .search-btn {
-        background: rgba(255, 255, 255, 0.918);
-        border: 1px solid #333;
-        border-radius: 50%;
-        padding: 10px;
-        cursor: pointer;
-
-        & img {
-          max-height: 20px;
-          object-fit: contain;
-        }
-      }
-    }
-  }
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   .home-section-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-    margin-top: 30px;
-
     & .main-card-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
       & .main-weather-card {
+        animation: fadeIn 350ms ease-in 0ms forwards;
+
         border-radius: 10px;
-
-        width: 50%;
         max-width: 600px;
-        margin: 20px auto 2% auto;
-
         padding: 15px;
-        position: relative;
+        width: 50%;
+
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -106,34 +67,34 @@
       }
     }
 
-    & .weather-carrousel {
-      margin: 70px auto 0 auto;
-      height: 20%;
-      width: 90%;
-      display: flex;
-
-      & .weather-carrousel-card {
-        padding: 10px;
-        width: 15%;
-        min-width: 150px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 10px;
-      }
+    & .day-btn {
+      cursor: pointer;
+    }
+    & .day-btn:hover {
+      text-decoration: underline;
     }
   }
+}
 
-  .icon-container {
-    width: 40%;
-    height: 40%;
-  }
+.location {
+  animation: fadeIn 350ms ease-in 0ms forwards;
+  font-size: 2.3rem;
+  font-family: "Borel", cursive;
+  font-weight: 400;
+  font-style: normal;
+  margin-top: 30px;
+  text-align: center;
+}
 
-  img {
-    object-fit: contain;
-    height: 100%;
-    width: 100%;
-  }
+.icon-container {
+  width: 40%;
+  height: 40%;
+}
+
+img {
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
 }
 
 .glass-effect {
@@ -146,10 +107,14 @@
 }
 
 .footer {
+  position: fixed;
+  bottom: 0;
+
   display: flex;
   padding: 5px;
   width: 100%;
   justify-content: center;
+
   & a {
     font-size: 1.2rem;
     font-style: italic;

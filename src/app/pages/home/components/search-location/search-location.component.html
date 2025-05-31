@@ -1,0 +1,17 @@
+<article class="search-bar-container">
+  <form
+    class="search-location-form"
+    [formGroup]="addressForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <input
+      class="location-input"
+      type="text"
+      placeholder="Enter location"
+      formControlName="address"
+    />
+    <button class="search-btn" type="submit">
+      <img src="../../../assets/search-interface-symbol.png" alt="" />
+    </button>
+  </form>
+</article>
