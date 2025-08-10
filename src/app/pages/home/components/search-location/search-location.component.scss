@@ -6,6 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeIn 350ms ease-in 0ms forwards;
 
   & .search-location-form {
     padding: 5px;

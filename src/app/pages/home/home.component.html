@@ -2,13 +2,18 @@
   @if(!dailyWeatherForecast$()) {
   <app-search-location (locationDetails)="updateForecast($event)" />
   } @else {
-  <section class="home-section-container">
-    <article class="main-card-container">
-      <a class="day-btn"> Day Before </a>
+  <span class="x-btn" (click)="resetForecast()">x</span>
 
+  <section class="home-section-container">
+    <div class="location">
+      <p>{{ dailyWeatherForecast$()?.location }}</p>
+      <p>{{ dailyWeatherForecast$()?.day }}</p>
+    </div>
+
+    <article class="main-card-container">
       <div class="main-weather-card glass-effect">
         <picture class="weather-img-container">
-          <img src="../../../assets/cloud.png" alt="Cloudy" />
+          <img [src]="weatherPicturePath$()" alt="Cloudy" />
         </picture>
 
         <div class="weather-details">
@@ -43,14 +48,7 @@
           </div>
         </div>
       </div>
-
-      <a class="day-btn"> Next Day </a>
     </article>
-
-    <h2 class="location">
-      {{ dailyWeatherForecast$()?.location }} -
-      {{ dailyWeatherForecast$()?.day }}
-    </h2>
   </section>
   }
 

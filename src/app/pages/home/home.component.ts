@@ -10,7 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SCHEDULER_CONFIG } from '../../constants/scheduler.config';
 import { ILocationAndWeatherDetails } from '../../interfaces/weather-forecast';
 import { DayIndexes, MonthIndexes } from '../../types/day.index';
-import { getWeatherClassByWeatherCode } from '../../utils';
+import { getWeatherClassByWeatherCode, getWeatherPng } from '../../utils';
 import { SearchLocationComponent } from './components/search-location/search-location.component';
 
 @Component({
@@ -21,13 +21,26 @@ import { SearchLocationComponent } from './components/search-location/search-loc
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  private weatherClass!: string;
+
   @ViewChild('containerRef')
   containerRef!: ElementRef<HTMLDivElement>;
+
   renderer2 = inject(Renderer2);
 
   dailyWeatherForecast$ = signal<ILocationAndWeatherDetails | null>(null);
+  weatherPicturePath$ = signal<string>('assets/cloudy-day.png');
 
-  updateForecast(weatherData: ILocationAndWeatherDetails) {
+  resetForecast(): void {
+    this.dailyWeatherForecast$.set(null);
+    this.renderer2.removeClass(
+      this.containerRef.nativeElement,
+      this.weatherClass
+    );
+    this.renderer2.setStyle(this.containerRef.nativeElement, 'color', 'black');
+  }
+
+  updateForecast(weatherData: ILocationAndWeatherDetails): void {
     const date = new Date(weatherData.day);
     const dayNumber: DayIndexes = date.getDay() as DayIndexes;
     const dayStr: string = SCHEDULER_CONFIG.DAYS[dayNumber];
@@ -39,9 +52,27 @@ export class HomeComponent {
       day: `${dayStr}, ${date.getDate()} ${monthStr} of ${date.getFullYear()}`,
     });
 
-    this.renderer2.addClass(
-      this.containerRef.nativeElement,
-      getWeatherClassByWeatherCode(weatherData.weatherCode, weatherData.isDay)
+    this.weatherClass = getWeatherClassByWeatherCode(
+      weatherData.weatherCode,
+      weatherData.isDay
     );
+
+    this.renderer2.addClass(this.containerRef.nativeElement, this.weatherClass);
+
+    this.weatherPicturePath$.set(getWeatherPng(this.weatherClass));
+
+    if (weatherData.isDay) {
+      this.renderer2.setStyle(
+        this.containerRef.nativeElement,
+        'color',
+        'black'
+      );
+    } else {
+      this.renderer2.setStyle(
+        this.containerRef.nativeElement,
+        'color',
+        '#f3f3f3'
+      );
+    }
   }
 }

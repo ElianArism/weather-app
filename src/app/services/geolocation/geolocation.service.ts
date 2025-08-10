@@ -12,8 +12,6 @@ export class GeolocationService {
   constructor(private http: HttpClient) {}
 
   getCoordinates(address: string) {
-    console.log(this.apiUrl);
-    console.log(address);
     return this.http.get(`${this.apiUrl}&q=${address}&format=json`).pipe(
       map((results: any) => {
         return results[0];

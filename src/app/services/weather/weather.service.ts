@@ -6,21 +6,6 @@ import { roundDecimals } from '../../utils';
   providedIn: 'root',
 })
 export class WeatherService {
-  constructor() {}
-
-  private getPosition(): Promise<{ longitude: number; latitude: number }> {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        (resp) =>
-          resolve({
-            longitude: resp.coords.longitude,
-            latitude: resp.coords.latitude,
-          }),
-        (err) => reject(err)
-      );
-    });
-  }
-
   async getWeather(locationDetails: any) {
     const params = {
       latitude: locationDetails.lat,
@@ -51,47 +36,8 @@ export class WeatherService {
     const url = 'https://api.open-meteo.com/v1/forecast';
     const responses = await fetchWeatherApi(url, params);
 
-    this.logWeatherData(responses[0]);
-
     // Process first location. Add a for-loop for multiple locations or weather models
     return responses[0];
-  }
-
-  private logWeatherData(data: any): void {
-    const weatherData = this.parseWeatherData(data);
-    for (let i = 0; i < weatherData.daily.time.length; i++) {
-      console.log('time : ' + weatherData.daily.time[i].toISOString());
-      console.log('sunrise : ' + weatherData.daily.sunrise[i].toISOString());
-      console.log('sunset : ' + weatherData.daily.sunset[i].toISOString());
-      console.log(
-        'temperature2mMax : ' + weatherData.daily.temperature2mMax[i]
-      );
-      console.log(
-        'temperature2mMean : ' + weatherData.daily.temperature2mMean[i]
-      );
-      console.log(
-        'apparentTemperatureMean : ' +
-          weatherData.daily.apparentTemperatureMean[i]
-      );
-      console.log(
-        'precipitationProbabilityMean : ' +
-          weatherData.daily.precipitationProbabilityMean[i]
-      );
-      console.log(
-        'relativeHumidity2mMean : ' +
-          weatherData.daily.relativeHumidity2mMean[i]
-      );
-      console.log(
-        'temperature2mMin : ' + weatherData.daily.temperature2mMin[i]
-      );
-      console.log(
-        'windSpeed10mMean : ' + weatherData.daily.windSpeed10mMean[i]
-      );
-      console.log('rainSum : ' + weatherData.daily.rainSum[i]);
-      console.log('weather_code : ' + weatherData.current.weather_code);
-    }
-
-    console.log(weatherData.current);
   }
 
   parseWeatherData(response: any) {
